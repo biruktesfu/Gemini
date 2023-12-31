@@ -1,0 +1,59 @@
+.button {
+  border-radius: 50%;
+  padding: 1.8rem 1rem;
+  margin: 10px;
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  margin: 4rem 11rem;
+}
+
+.open {
+  position: absolute;
+}
+
+.popoverContent {
+  width: 23rem;
+  margin-left: 0.5rem;
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px,
+    rgba(0, 0, 0, 0.22) 0px 10px 10px;
+  height: 28rem;
+  top: 0;
+  overflow-y: scroll;
+}
+
+.popoverContent::-webkit-scrollbar {
+  display: none;
+}
+
+.inputContainer {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  position: absolute;
+  bottom: 0;
+  padding: 1rem;
+}
+.input {
+  width: 100%;
+}
+
+.messageIcon {
+  display: flex;
+  align-items: center;
+  margin: 0 1.3rem;
+  cursor: pointer;
+  font-size: 24;
+}
+.messageButton {
+  background-color: transparent;
+}
+.messageButton:hover {
+  background-color: transparent;
+}
+.messageButton:active {
+  scale: 0.9;
+}
+.conversation {
+  margin-bottom: 4rem;
+}

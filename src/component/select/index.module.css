@@ -1,0 +1,17 @@
+.selectTrigger {
+  background: transparent;
+}
+
+.selectTrigger:focus {
+  border-color: inherit;
+  box-shadow: none;
+}
+
+.selectItem:hover {
+  cursor: pointer;
+}
+
+.selectContent {
+  background: none;
+  color: white;
+}/*# sourceMappingURL=index.module.css.map */

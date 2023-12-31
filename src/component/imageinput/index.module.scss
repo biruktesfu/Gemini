@@ -1,0 +1,12 @@
+.input {
+  background: none;
+  color: white;
+}
+.clickable {
+  font-size: 24px;
+  display: flex;
+  align-items: center;
+}
+.clickable:hover {
+  cursor: pointer;
+}
