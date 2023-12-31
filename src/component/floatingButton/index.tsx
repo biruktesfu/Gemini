@@ -62,9 +62,9 @@ export const FloatingAction = () => {
     },
   ];
 
-  const DisplayConvo = conversation.map((message) => {
+  const DisplayConvo = conversation.map((message, index: number) => {
     return (
-      <div style={{ display: "flex", flexDirection: "column" }}>
+      <div style={{ display: "flex", flexDirection: "column" }} key={index}>
         <div
           style={{
             width: "100%",

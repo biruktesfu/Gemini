@@ -26,6 +26,7 @@ export default function Home() {
     return behind.map((value: any, index: number) => {
       return (
         <div
+          key={index}
           style={{
             margin: "10px",
             padding: "10px",
