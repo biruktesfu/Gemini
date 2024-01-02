@@ -1,6 +1,12 @@
 .input {
   background: none;
   color: white;
+  display: none;
+}
+
+.input::file-selector-button {
+  color: red;
+  display: none;
 }
 
 .clickable {
@@ -11,4 +17,8 @@
 
 .clickable:hover {
   cursor: pointer;
+}
+
+.showImages::-webkit-scrollbar {
+  display: none;
 }/*# sourceMappingURL=index.module.css.map */
