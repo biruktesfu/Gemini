@@ -14,7 +14,7 @@ import styles from "../styles/index.module.css";
 import { useEffect, useRef, useState } from "react";
 
 export default function Home() {
-  const [behind, setBehind] = useState<any>([]);
+  const [previous, setPrevious] = useState<any>([]);
   const [pr, setPr] = useState("");
   const [generated, setGenerated] = useState("");
   const [loader, setLoader] = useState(<></>);
@@ -22,8 +22,8 @@ export default function Home() {
   const genAI = new GoogleGenerativeAI(process.env.API_KEY as string);
   const containerRef = useRef<HTMLDivElement | null>(null);
 
-  const showbehind = () => {
-    return behind.map((value: any, index: number) => {
+  const showPrevious = () => {
+    return previous.map((value: any, index: number) => {
       return (
         <div
           key={index}
@@ -60,14 +60,17 @@ export default function Home() {
     const model = genAI.getGenerativeModel({ model: "gemini-pro" });
     try {
       const result = await model.generateContent(prompt);
-      const response = await result.response;
+      const response = result.response;
       const text = response.text();
+      console.log({ text });
       setLoader(<></>);
-      setBehind([...behind, { prompt: prompt, generated: text }]);
+      setPrevious([...previous, { prompt: prompt, generated: text }]);
       setPr("");
       setGenerated(text);
     } catch (error) {
+      console.log({ error });
       setGenerated("whoops an error occured");
+      setPr("");
       setLoader(<></>);
     }
   };
@@ -90,8 +93,8 @@ export default function Home() {
             </h1>
           </div>
           <div className={styles.body}>
-            {behind.length > 0 ? (
-              showbehind()
+            {previous.length > 0 ? (
+              showPrevious()
             ) : pr ? (
               <></>
             ) : (

@@ -30,11 +30,7 @@ export const GeminiSelect: FC<Iprops> = (props) => {
           <SelectItem value="Gemini Pro" className={styles.selectItem}>
             Gemini Pro
           </SelectItem>
-          <SelectItem
-            value="Gemini Pro Visual"
-            className={styles.selectItem}
-            disabled
-          >
+          <SelectItem value="Gemini Pro Visual" className={styles.selectItem}>
             Gemini Pro Visual
           </SelectItem>
         </SelectGroup>
