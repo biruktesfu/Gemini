@@ -4,11 +4,16 @@ import { IoIosCloseCircle } from "react-icons/io";
 import styles from "./index.module.css";
 import Image from "next/image";
 
-import { useEffect, useState } from "react";
-export const ImageInput = () => {
+import { FC, useEffect, useState } from "react";
+
+interface Iprops {
+  hopImages: (val: any) => void;
+}
+export const ImageInput: FC<Iprops> = (props) => {
   const [images, setImages] = useState<any>([]);
   useEffect(() => {
     console.log({ images });
+    props.hopImages(images);
   }, [images]);
 
   const removeAtIndex = (array: [], index: number) => {

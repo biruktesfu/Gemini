@@ -8,10 +8,10 @@ import { ImageInput } from "../imageinput";
 interface Iprops {
   onSubmit: (val: any) => void;
   disabled: boolean;
+  hopImage: (val: any) => void;
 }
 
 export const InputBox: FC<Iprops> = (props) => {
-  const [behind, setbehind] = useState([]);
   const [input, setinput] = useState("");
 
   return (
@@ -25,7 +25,12 @@ export const InputBox: FC<Iprops> = (props) => {
       >
         {props.disabled === false && (
           <span style={{ display: "flex", alignItems: "center" }}>
-            <ImageInput />
+            <ImageInput
+              hopImages={(val) => {
+                const imageFileList: FileList = val;
+                props.hopImage(imageFileList);
+              }}
+            />
           </span>
         )}
         <Input
