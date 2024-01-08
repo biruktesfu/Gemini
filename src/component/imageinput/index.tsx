@@ -69,7 +69,7 @@ export const ImageInput: FC<Iprops> = (props) => {
               style={{
                 left: 0,
                 height: "70px",
-                width: "200px",
+                // width: "200px",
                 overflow: "auto",
                 display: "flex",
                 alignItems: "center",

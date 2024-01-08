@@ -16,45 +16,52 @@ import { useEffect, useRef, useState } from "react";
 export default function Home() {
   const [previous, setPrevious] = useState<any>([]);
   const [pr, setPr] = useState("");
-  const [generated, setGenerated] = useState("");
+  const [generate, setGenerated] = useState<{ [key: string]: any } | undefined>(
+    undefined
+  );
   const [images, setImages] = useState<FileList>();
   const [loader, setLoader] = useState(<></>);
   const [disabled, setDisabled] = useState(true);
   const genAI = new GoogleGenerativeAI(process.env.API_KEY as string);
-  const containerRef = useRef<HTMLDivElement | null>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const containerElement = containerRef.current;
 
   const showPrevious = () => {
-    return previous.map((value: any, index: number) => {
-      return (
-        <div
-          key={index}
-          style={{
-            margin: "10px",
-            padding: "10px",
-            borderRadius: "10px",
-            color: "white",
-            display: "flex",
-            flexDirection: "column",
-            gap: 4,
-          }}
-        >
-          <span
+    return (
+      previous.length > 0 &&
+      previous.map((value: any, index: number) => {
+        return (
+          <div
+            key={index}
             style={{
-              marginBottom: "10px",
-              backgroundColor: "#484848",
-              width: "fit-content",
-              padding: "4px 10px",
-              borderRadius: "20px",
+              margin: "10px",
+              padding: "10px",
+              borderRadius: "10px",
+              color: "white",
+              display: "flex",
+              flexDirection: "column",
+              gap: 4,
             }}
           >
-            {value.prompt}
-          </span>
-          <span style={{ fontSize: "14px", color: "#9c9c9c" }}>
-            {value.generated}
-          </span>
-        </div>
-      );
-    });
+            <span
+              style={{
+                marginBottom: "10px",
+                backgroundColor: "#484848",
+                width: "fit-content",
+                padding: "4px 10px",
+                borderRadius: "20px",
+              }}
+            >
+              {value && value.prompt}
+            </span>
+            <span style={{ fontSize: "14px", color: "#9c9c9c" }}>
+              {value && value.generated}
+              {/* {index === previous.length - 1 && <span>{loader}</span>} */}
+            </span>
+          </div>
+        );
+      })
+    );
   };
 
   const geminiVision = async (prompt: string) => {
@@ -73,41 +80,55 @@ export default function Home() {
     }
 
     async function run(prompt: string) {
-      // For text-and-images input (multimodal), use the gemini-pro-vision model
-      const model = genAI.getGenerativeModel({ model: "gemini-pro-vision" });
+      try {
+        let generated = "";
+        // For text-and-images input (multimodal), use the gemini-pro-vision model
+        const model = genAI.getGenerativeModel({ model: "gemini-pro-vision" });
 
-      const fileInputEl: any = images;
-      const imageParts: any = await Promise.all(
-        [...fileInputEl].map(fileToGenerativePart)
-      );
+        const fileInputEl: any = images;
+        const imageParts: any = await Promise.all(
+          [...fileInputEl].map(fileToGenerativePart)
+        );
 
-      const result = await model.generateContent([prompt, ...imageParts]);
-      const response = await result.response;
-      const text = response.text();
-      console.log(text);
-      setLoader(<></>);
-      setPrevious([...previous, { prompt: prompt, generated: text }]);
-      setPr("");
-      setGenerated(text);
+        const result = await model.generateContentStream([
+          prompt,
+          ...imageParts,
+        ]);
+        for await (const chunk of result.stream) {
+          const chunkText = chunk.text();
+          generated += chunkText;
+          setGenerated({ prompt, generated });
+        }
+        setPrevious([...previous, { prompt, generated }]);
+        setLoader(<></>);
+      } catch (error: any) {
+        setGenerated({ prompt, generated: error.toString() });
+        setLoader(<></>);
+      }
     }
     run(prompt);
   };
+  useEffect(() => {
+    setGenerated(undefined);
+  }, [previous]);
+  let count = 0;
   const onsubmit = async (prompt: string) => {
+    setGenerated({ prompt, generated: "" });
+    setLoader(<Loader />);
+    let generated = "";
     if (disabled) {
-      const model = genAI.getGenerativeModel({ model: "gemini-pro" });
       try {
-        const result = await model.generateContent(prompt);
-        const response = result.response;
-        const text = response.text();
-        console.log({ text });
+        const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+        const result = await model.generateContentStream(prompt);
+        for await (const chunk of result.stream) {
+          const chunkText = chunk.text();
+          generated += chunkText;
+          setGenerated({ prompt, generated });
+        }
+        setPrevious([...previous, { prompt, generated }]);
         setLoader(<></>);
-        setPrevious([...previous, { prompt: prompt, generated: text }]);
-        setPr("");
-        setGenerated(text);
-      } catch (error) {
-        console.log({ error });
-        setGenerated("whoops an error occured");
-        setPr("");
+      } catch (error: any) {
+        setGenerated({ prompt, generated: error.toString() });
         setLoader(<></>);
       }
     } else {
@@ -121,18 +142,23 @@ export default function Home() {
       setDisabled(false);
     }
   };
+  useEffect(() => {
+    containerElement?.scrollTo(0, containerElement.scrollHeight);
+  }, [generate, previous]);
 
   return (
     <div>
       <div>
         <div className={styles.headerContainer}>
           <div className={styles.h1Container}>
-            <h1 className={styles.h1}>GI</h1>
+            <h1 className={styles.h1}>
+              <a href="#bottom">GI</a>
+            </h1>
             <h1 className={styles.h1}>
               <GeminiSelect onChange={onSelectChange} />
             </h1>
           </div>
-          <div className={styles.body}>
+          <div className={styles.body} ref={containerRef}>
             {previous.length > 0 ? (
               showPrevious()
             ) : pr ? (
@@ -140,23 +166,24 @@ export default function Home() {
             ) : (
               <div style={{ color: "white", paddingTop: "40px" }}>
                 <h1
-                  style={{ fontWeight: "bold", marginBottom: "30px" }}
+                  style={{
+                    fontWeight: "bold",
+                    marginBottom: "30px",
+                  }}
                   className={styles.typewriter}
                 >
                   Hello, I am Gemini.
                 </h1>
-                {/* <p>Tell me what is on your mind...</p> */}
               </div>
             )}
             <div
-              ref={containerRef}
               style={{
                 width: "100%",
                 display: "flex",
                 justifyContent: "flex-start",
               }}
             >
-              <div
+              {/* <div
                 style={{
                   display: "flex",
                   flexDirection: "column",
@@ -171,20 +198,57 @@ export default function Home() {
                     gap: 5,
                   }}
                 >
+                  {!generate && (
+                    <span
+                      style={{
+                        marginBottom: "10px",
+                        backgroundColor: pr ? "grey" : "transparent",
+                        width: "fit-content",
+                        padding: "4px 10px",
+                        borderRadius: "20px",
+                      }}
+                    >
+                      {pr}
+                    </span>
+                  )}
+                </div>
+              </div> */}
+            </div>
+            <div
+              style={{
+                color: "white",
+                width: "600px",
+              }}
+            >
+              {generate && (
+                <div
+                  style={{
+                    margin: "10px",
+                    padding: "10px",
+                    borderRadius: "10px",
+                    color: "white",
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: 4,
+                  }}
+                >
                   <span
                     style={{
                       marginBottom: "10px",
-                      backgroundColor: pr ? "grey" : "transparent",
+                      backgroundColor: "#484848",
                       width: "fit-content",
                       padding: "4px 10px",
                       borderRadius: "20px",
                     }}
                   >
-                    {pr}
+                    {generate.prompt}
                   </span>
-                  <span>{loader}</span>
+                  <span style={{ fontSize: "14px", color: "#9c9c9c" }}>
+                    {generate.generated}
+                    {loader}
+                  </span>
                 </div>
-              </div>
+              )}
             </div>
           </div>
         </div>
@@ -197,11 +261,10 @@ export default function Home() {
           }}
           disabled={disabled}
           onSubmit={(val) => {
-            const containerElement = containerRef.current;
-            if (containerElement) {
-              containerElement.scrollTo(0, containerElement.scrollHeight);
-            }
-            setGenerated("");
+            containerElement?.scrollIntoView({
+              behavior: "smooth",
+              block: "end",
+            });
             setPr(val);
             onsubmit(val);
             setLoader(<Loader />);
