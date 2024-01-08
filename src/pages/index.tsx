@@ -23,7 +23,7 @@ export default function Home() {
   const [loader, setLoader] = useState(<></>);
   const [disabled, setDisabled] = useState(true);
   const genAI = new GoogleGenerativeAI(process.env.API_KEY as string);
-  const containerRef = useRef<HTMLDivElement | null>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
   const containerElement = containerRef.current;
 
   const showPrevious = () => {
@@ -98,8 +98,6 @@ export default function Home() {
           const chunkText = chunk.text();
           generated += chunkText;
           setGenerated({ prompt, generated });
-
-          containerElement?.scrollTo(0, containerElement.scrollHeight);
         }
         setPrevious([...previous, { prompt, generated }]);
         setLoader(<></>);
@@ -126,7 +124,6 @@ export default function Home() {
           const chunkText = chunk.text();
           generated += chunkText;
           setGenerated({ prompt, generated });
-          containerElement?.scrollTo(0, containerElement.scrollHeight);
         }
         setPrevious([...previous, { prompt, generated }]);
         setLoader(<></>);
@@ -145,6 +142,9 @@ export default function Home() {
       setDisabled(false);
     }
   };
+  useEffect(() => {
+    containerElement?.scrollTo(0, containerElement.scrollHeight);
+  }, [generate, previous]);
 
   return (
     <div>
@@ -177,7 +177,6 @@ export default function Home() {
               </div>
             )}
             <div
-              ref={containerRef}
               style={{
                 width: "100%",
                 display: "flex",
@@ -262,7 +261,10 @@ export default function Home() {
           }}
           disabled={disabled}
           onSubmit={(val) => {
-            containerElement?.scrollTo(0, containerElement.scrollHeight);
+            containerElement?.scrollIntoView({
+              behavior: "smooth",
+              block: "end",
+            });
             setPr(val);
             onsubmit(val);
             setLoader(<Loader />);
