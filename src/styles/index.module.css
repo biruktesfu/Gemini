@@ -1,6 +1,5 @@
 .typewriter {
   color: rgb(175, 175, 175);
-  width: fit-content;
   font-size: 50px;
   overflow: hidden; /* Ensures the content is not revealed until the animation */
   border-right: solid rgb(175, 175, 175) 1px; /* The typwriter cursor */
@@ -117,13 +116,23 @@
   padding: 4px 10px;
   border-radius: 20px;
 }
+.gif {
+  background: url("../assets/images/giphy.gif");
+  height: 70px;
+  width: 80px;
+  margin: 4px;
+  border-radius: 50%;
+
+  background-size: cover;
+}
 
 @media screen and (max-width: 700px) {
   .typewriter {
     font-size: 40px;
+    width: fit-content;
   }
   .prompt {
-    font-size: 14px;
+    font-size: 16px;
   }
   .body {
     width: 450px;
@@ -131,20 +140,44 @@
   }
   .generated {
     width: 100%;
+    font-size: 15px;
+  }
+  .initialGenerate {
+    font-size: 15px;
+  }
+  @keyframes typing {
+    from {
+      width: 0;
+    }
+    to {
+      width: 360px;
+    }
   }
 }
 @media screen and (max-width: 500px) {
   .typewriter {
     font-size: 30px;
+    width: fit-content;
   }
   .prompt {
-    font-size: 12px;
+    font-size: 15px;
   }
   .body {
-    width: 350px;
+    width: 400px;
     padding: 10px;
   }
   .generated {
-    font-size: 12px;
+    font-size: 14px;
+  }
+  .initialGenerate {
+    font-size: 14px;
+  }
+  @keyframes typing {
+    from {
+      width: 0;
+    }
+    to {
+      width: 260px;
+    }
   }
 }

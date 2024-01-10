@@ -24,6 +24,8 @@ export default function Home() {
   const [disabled, setDisabled] = useState(true);
   const genAI = new GoogleGenerativeAI(process.env.API_KEY as string);
   const containerRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLDivElement>(null);
+  const inputElement = inputRef.current;
   const containerElement = containerRef.current;
 
   const showPrevious = () => {
@@ -138,15 +140,25 @@ export default function Home() {
   useEffect(() => {
     containerElement?.scrollTo(0, containerElement.scrollHeight);
   }, [generate, previous]);
+  const [visibleGif, setVisibleGif] = useState(false);
 
   return (
     <div>
       <div>
         <div className={styles.headerContainer}>
-          <div className={styles.h1Container}>
-            <h1 className={styles.h1}>
-              <a href="#bottom">GI</a>
-            </h1>
+          <div
+            className={styles.h1Container}
+            onClick={() => {
+              setVisibleGif(!visibleGif);
+            }}
+          >
+            {!visibleGif ? (
+              <h1 className={styles.h1}>
+                <a href="#bottom">GI</a>
+              </h1>
+            ) : (
+              <span className={styles.gif}></span>
+            )}
             <h1 className={styles.h1}>
               <GeminiSelect onChange={onSelectChange} />
             </h1>
@@ -226,7 +238,7 @@ export default function Home() {
                   }}
                 >
                   <span className={styles.prompt}>{generate.prompt}</span>
-                  <span style={{ fontSize: "14px", color: "#9c9c9c" }}>
+                  <span style={{ color: "#9c9c9c" }}>
                     {generate.generated}
                     {loader}
                   </span>
@@ -236,8 +248,9 @@ export default function Home() {
           </div>
         </div>
       </div>
-      <div className={styles.inputContainer}>
+      <div className={styles.inputContainer} ref={inputRef}>
         {/* <FloatingAction /> */}
+
         <InputBox
           hopImage={(val) => {
             setImages(val);
