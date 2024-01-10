@@ -43,18 +43,11 @@ export default function Home() {
               gap: 4,
             }}
           >
+            <span className={styles.prompt}>{value && value.prompt}</span>
             <span
-              style={{
-                marginBottom: "10px",
-                backgroundColor: "#484848",
-                width: "fit-content",
-                padding: "4px 10px",
-                borderRadius: "20px",
-              }}
+              // style={{ fontSize: "14px", color: "#9c9c9c" }}
+              className={styles.generated}
             >
-              {value && value.prompt}
-            </span>
-            <span style={{ fontSize: "14px", color: "#9c9c9c" }}>
               {value && value.generated}
               {/* {index === previous.length - 1 && <span>{loader}</span>} */}
             </span>
@@ -215,9 +208,9 @@ export default function Home() {
               </div> */}
             </div>
             <div
+              className={styles.initialGenerate}
               style={{
                 color: "white",
-                width: "600px",
               }}
             >
               {generate && (
@@ -232,17 +225,7 @@ export default function Home() {
                     gap: 4,
                   }}
                 >
-                  <span
-                    style={{
-                      marginBottom: "10px",
-                      backgroundColor: "#484848",
-                      width: "fit-content",
-                      padding: "4px 10px",
-                      borderRadius: "20px",
-                    }}
-                  >
-                    {generate.prompt}
-                  </span>
+                  <span className={styles.prompt}>{generate.prompt}</span>
                   <span style={{ fontSize: "14px", color: "#9c9c9c" }}>
                     {generate.generated}
                     {loader}

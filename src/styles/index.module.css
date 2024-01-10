@@ -106,3 +106,45 @@
   justify-content: center;
   align-items: flex-end;
 }
+.generated {
+  color: #9c9c9c;
+  font-size: 14px;
+}
+.prompt {
+  margin-bottom: 10px;
+  background-color: #484848;
+  width: fit-content;
+  padding: 4px 10px;
+  border-radius: 20px;
+}
+
+@media screen and (max-width: 700px) {
+  .typewriter {
+    font-size: 40px;
+  }
+  .prompt {
+    font-size: 14px;
+  }
+  .body {
+    width: 450px;
+    height: 76dvh;
+  }
+  .generated {
+    width: 100%;
+  }
+}
+@media screen and (max-width: 500px) {
+  .typewriter {
+    font-size: 30px;
+  }
+  .prompt {
+    font-size: 12px;
+  }
+  .body {
+    width: 350px;
+    padding: 10px;
+  }
+  .generated {
+    font-size: 12px;
+  }
+}

@@ -24,7 +24,13 @@ export const InputBox: FC<Iprops> = (props) => {
         }}
       >
         {props.disabled === false && (
-          <span style={{ display: "flex", alignItems: "center" }}>
+          <span
+            style={{
+              display: "flex",
+              alignItems: "center",
+              marginLeft: "10px",
+            }}
+          >
             <ImageInput
               hopImages={(val) => {
                 const imageFileList: FileList = val;
