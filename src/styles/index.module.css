@@ -108,7 +108,10 @@
 }
 .generated {
   color: #9c9c9c;
-  font-size: 14px;
+  font-size: 15px;
+}
+.initialGenerate {
+  font-size: 15px;
 }
 .prompt {
   margin-bottom: 10px;
@@ -141,10 +144,10 @@
   }
   .generated {
     width: 100%;
-    font-size: 15px;
+    font-size: 14px;
   }
   .initialGenerate {
-    font-size: 15px;
+    font-size: 14px;
   }
   @keyframes typing {
     from {
@@ -168,10 +171,10 @@
     padding: 10px;
   }
   .generated {
-    font-size: 14px;
+    font-size: 13px;
   }
   .initialGenerate {
-    font-size: 14px;
+    font-size: 13px;
   }
   @keyframes typing {
     from {
