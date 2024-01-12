@@ -106,7 +106,6 @@ export default function Home() {
   useEffect(() => {
     setGenerated(undefined);
   }, [previous]);
-  let count = 0;
   const onsubmit = async (prompt: string) => {
     setGenerated({ prompt, generated: "" });
     setLoader(<Loader />);
@@ -154,7 +153,7 @@ export default function Home() {
           >
             {!visibleGif ? (
               <h1 className={styles.h1}>
-                <a href="#bottom">GI</a>
+                <a>GI</a>
               </h1>
             ) : (
               <span className={styles.gif}></span>
