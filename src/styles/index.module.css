@@ -1,6 +1,7 @@
 .typewriter {
   color: rgb(175, 175, 175);
   font-size: 50px;
+  width: 450px;
   overflow: hidden; /* Ensures the content is not revealed until the animation */
   border-right: solid rgb(175, 175, 175) 1px; /* The typwriter cursor */
   white-space: nowrap; /* Keeps the content on a single line */
