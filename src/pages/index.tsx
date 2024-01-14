@@ -139,25 +139,16 @@ export default function Home() {
   useEffect(() => {
     containerElement?.scrollTo(0, containerElement.scrollHeight);
   }, [generate, previous]);
-  const [visibleGif, setVisibleGif] = useState(false);
 
   return (
     <div>
       <div>
         <div className={styles.headerContainer}>
-          <div
-            className={styles.h1Container}
-            onClick={() => {
-              setVisibleGif(!visibleGif);
-            }}
-          >
-            {!visibleGif ? (
-              <h1 className={styles.h1}>
-                <a>GI</a>
-              </h1>
-            ) : (
-              <span className={styles.gif}></span>
-            )}
+          <div className={styles.h1Container}>
+            <h1 className={styles.h1}>
+              <a>GI</a>
+            </h1>
+
             <h1 className={styles.h1}>
               <GeminiSelect onChange={onSelectChange} />
             </h1>
