@@ -122,11 +122,10 @@ export default function Home() {
 
           rawArray = rawArray
             .filter((val: any) => val !== "")
-            .map((indivstring: any) => {
+            .map((indivstring: any, index: number) => {
               generated += indivstring;
-              +"<br/>";
               return (
-                <div>
+                <div key={index}>
                   <div>{generated}</div>
                 </div>
               );
