@@ -97,7 +97,8 @@ export default function Home() {
         setPrevious([...previous, { prompt, generated }]);
         setLoader(<></>);
       } catch (error: any) {
-        setGenerated({ prompt, generated: error.toString() });
+        // setGenerated({ prompt, generated: error.toString() });
+        setGenerated({ prompt, generated: "An error occured" });
         setLoader(<></>);
       }
     }
@@ -109,20 +110,36 @@ export default function Home() {
   const onsubmit = async (prompt: string) => {
     setGenerated({ prompt, generated: "" });
     setLoader(<Loader />);
-    let generated = "";
+    let generated = ``;
     if (disabled) {
       try {
         const model = genAI.getGenerativeModel({ model: "gemini-pro" });
         const result = await model.generateContentStream(prompt);
         for await (const chunk of result.stream) {
           const chunkText = chunk.text();
-          generated += chunkText;
-          setGenerated({ prompt, generated });
+          let rawArray: any = chunkText.split("*");
+          console.log({ rawArray });
+
+          rawArray = rawArray
+            .filter((val: any) => val !== "")
+            .map((indivstring: any) => {
+              generated += indivstring;
+              +"<br/>";
+              return (
+                <div>
+                  <div>{generated}</div>
+                </div>
+              );
+            });
+
+          // generated += chunkText;
+          setGenerated({ prompt, generated: rawArray });
         }
         setPrevious([...previous, { prompt, generated }]);
         setLoader(<></>);
       } catch (error: any) {
-        setGenerated({ prompt, generated: error.toString() });
+        // setGenerated({ prompt, generated: error.toString() });
+        setGenerated({ prompt, generated: "An error occured" });
         setLoader(<></>);
       }
     } else {
@@ -228,7 +245,13 @@ export default function Home() {
                   }}
                 >
                   <span className={styles.prompt}>{generate.prompt}</span>
-                  <span style={{ color: "#9c9c9c" }}>
+                  <span
+                    style={{
+                      color: "#9c9c9c",
+                      display: "flex",
+                      flexDirection: "column",
+                    }}
+                  >
                     {generate.generated}
                     {loader}
                   </span>
