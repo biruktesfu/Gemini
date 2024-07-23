@@ -40,7 +40,7 @@ export const InputBox: FC<Iprops> = (props) => {
           </span>
         )}
         <Input
-          placeholder="Don't leave me EMPTY ...."
+          placeholder="Enter Prompt"
           value={input}
           className={styles.input}
           onChange={(event) => {

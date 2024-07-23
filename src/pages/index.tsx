@@ -32,6 +32,37 @@ export default function Home() {
     return (
       previous.length > 0 &&
       previous.map((value: any, index: number) => {
+        console.log(value.generated.split("\n"));
+        const valueWithNewLine = value.generated.split("\n");
+        const styledVal = valueWithNewLine.map((val: any) => {
+          if (
+            val.length >= 4 &&
+            val[0] === "*" &&
+            val[1] === "*" &&
+            val[val.length - 1] === "*" &&
+            val[val.length - 2] === "*"
+          ) {
+            const splitval = val.split("*");
+            return (
+              <div style={{ fontWeight: "bold", color: "rgb(220, 220, 220)" }}>
+                {splitval}
+              </div>
+            );
+          } else if (
+            val.length >= 4 &&
+            val[0] === "*" &&
+            val[1] !== "*" &&
+            val[val.length - 1] === "*" &&
+            val[val.length - 2] !== "*"
+          ) {
+            const splitval = val.split("*");
+            return <div>{splitval}</div>;
+          } else {
+            const splitval = val.split("*").join("");
+            console.log({ splitval });
+            return <div style={{ padding: "3px" }}>{splitval}</div>;
+          }
+        });
         return (
           <div
             key={index}
@@ -45,14 +76,15 @@ export default function Home() {
               gap: 4,
             }}
           >
-            <span className={styles.prompt}>{value && value.prompt}</span>
-            <span
+            <div className={styles.prompt}>{value && value.prompt}</div>
+            <p
               // style={{ fontSize: "14px", color: "#9c9c9c" }}
               className={styles.generated}
             >
-              {value && value.generated}
+              {styledVal}
+              {/* {value && value.generated} */}
               {/* {index === previous.length - 1 && <span>{loader}</span>} */}
-            </span>
+            </p>
           </div>
         );
       })
@@ -85,18 +117,15 @@ export default function Home() {
           [...fileInputEl].map(fileToGenerativePart)
         );
 
-        const result = await model.generateContentStream([
-          prompt,
-          ...imageParts,
-        ]);
-        for await (const chunk of result.stream) {
-          const chunkText = chunk.text();
-          generated += chunkText;
-          setGenerated({ prompt, generated });
-        }
+        const result = await model.generateContent([prompt, ...imageParts]);
+        const response = await result.response;
+        const text = response.text();
+
+        setGenerated({ prompt, generated: text });
         setPrevious([...previous, { prompt, generated }]);
         setLoader(<></>);
       } catch (error: any) {
+        console.log({ error });
         // setGenerated({ prompt, generated: error.toString() });
         setGenerated({ prompt, generated: "An error occured" });
         setLoader(<></>);
@@ -110,33 +139,18 @@ export default function Home() {
   const onsubmit = async (prompt: string) => {
     setGenerated({ prompt, generated: "" });
     setLoader(<Loader />);
-    let generated = ``;
     if (disabled) {
       try {
         const model = genAI.getGenerativeModel({ model: "gemini-pro" });
-        const result = await model.generateContentStream(prompt);
-        for await (const chunk of result.stream) {
-          const chunkText = chunk.text();
-          let rawArray: any = chunkText.split("*");
-          console.log({ rawArray });
+        const result = await model.generateContent(prompt);
+        const response = await result.response;
+        const text = response.text();
 
-          rawArray = rawArray
-            .filter((val: any) => val !== "")
-            .map((indivstring: any, index: number) => {
-              generated += indivstring;
-              return (
-                <div key={index}>
-                  <div>{generated}</div>
-                </div>
-              );
-            });
-
-          // generated += chunkText;
-          setGenerated({ prompt, generated: rawArray });
-        }
-        setPrevious([...previous, { prompt, generated }]);
+        setGenerated({ prompt, generated: text });
+        setPrevious([...previous, { prompt, generated: text }]);
         setLoader(<></>);
       } catch (error: any) {
+        console.log({ error });
         // setGenerated({ prompt, generated: error.toString() });
         setGenerated({ prompt, generated: "An error occured" });
         setLoader(<></>);
