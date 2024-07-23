@@ -44,7 +44,10 @@ export default function Home() {
           ) {
             const splitval = val.split("*");
             return (
-              <div style={{ fontWeight: "bold", color: "rgb(220, 220, 220)" }}>
+              <div
+                style={{ fontWeight: "bold", color: "rgb(220, 220, 220)" }}
+                key={index}
+              >
                 {splitval}
               </div>
             );
@@ -56,11 +59,15 @@ export default function Home() {
             val[val.length - 2] !== "*"
           ) {
             const splitval = val.split("*");
-            return <div>{splitval}</div>;
+            return <div key={index}>{splitval}</div>;
           } else {
             const splitval = val.split("*").join("");
             console.log({ splitval });
-            return <div style={{ padding: "3px" }}>{splitval}</div>;
+            return (
+              <div style={{ padding: "3px" }} key={index}>
+                {splitval}
+              </div>
+            );
           }
         });
         return (

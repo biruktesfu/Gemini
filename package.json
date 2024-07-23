@@ -14,7 +14,8 @@
     "@radix-ui/react-select": "^2.0.0",
     "@radix-ui/react-slot": "^1.0.2",
     "class-variance-authority": "^0.7.0",
-    "clsx": "^2.0.0",
+    "clsx": "^2.1.1",
+    "framer-motion": "^11.3.9",
     "lucide-react": "^0.302.0",
     "next": "14.0.4",
     "react": "^18",
@@ -23,7 +24,7 @@
     "react-native-keyboard-aware-scroll-view": "^0.9.5",
     "scss": "^0.2.4",
     "shadcn-ui": "^0.5.0",
-    "tailwind-merge": "^2.2.0",
+    "tailwind-merge": "^2.4.0",
     "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
