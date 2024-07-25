@@ -8,6 +8,7 @@ import {
   InputBox,
   Loader,
 } from "@/component";
+import { AnimatedTooltip } from "@/components";
 const inter = Inter({ subsets: ["latin"] });
 import styles from "../styles/index.module.css";
 
@@ -32,7 +33,6 @@ export default function Home() {
     return (
       previous.length > 0 &&
       previous.map((value: any, index: number) => {
-        console.log(value.generated.split("\n"));
         const valueWithNewLine = value.generated.split("\n");
         const styledVal = valueWithNewLine.map((val: any) => {
           if (
@@ -62,7 +62,6 @@ export default function Home() {
             return <div key={index}>{splitval}</div>;
           } else {
             const splitval = val.split("*").join("");
-            console.log({ splitval });
             return (
               <div style={{ padding: "3px" }} key={index}>
                 {splitval}
@@ -117,19 +116,23 @@ export default function Home() {
       try {
         let generated = "";
         // For text-and-images input (multimodal), use the gemini-pro-vision model
-        const model = genAI.getGenerativeModel({ model: "gemini-pro-vision" });
+        const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
         const fileInputEl: any = images;
         const imageParts: any = await Promise.all(
           [...fileInputEl].map(fileToGenerativePart)
         );
 
-        const result = await model.generateContent([prompt, ...imageParts]);
-        const response = await result.response;
-        const text = response.text();
+        const result: any = await model.generateContent([
+          prompt,
+          ...imageParts,
+        ]);
+        // const response = await result.response;
+        const text = result.response.text();
+        console.log({ text });
 
         setGenerated({ prompt, generated: text });
-        setPrevious([...previous, { prompt, generated }]);
+        setPrevious([...previous, { prompt, generated: text }]);
         setLoader(<></>);
       } catch (error: any) {
         console.log({ error });
@@ -157,7 +160,6 @@ export default function Home() {
         setPrevious([...previous, { prompt, generated: text }]);
         setLoader(<></>);
       } catch (error: any) {
-        console.log({ error });
         // setGenerated({ prompt, generated: error.toString() });
         setGenerated({ prompt, generated: "An error occured" });
         setLoader(<></>);

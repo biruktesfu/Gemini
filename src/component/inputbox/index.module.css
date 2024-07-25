@@ -1,6 +1,11 @@
 .container > form {
   display: flex;
   width: 40rem;
+  position: relative;
+}
+.container {
+  display: flex;
+  gap: 10px;
 }
 
 .input {
@@ -29,6 +34,7 @@
 @media screen and (max-width: 700px) {
   .container {
     width: 100%;
+    padding: 0 10px;
   }
   .container > form {
     width: 100%;
@@ -38,7 +44,8 @@
 @media screen and (max-width: 500px) {
   .container {
     width: 100%;
-    min-width: 300px;
+    min-width: 200px;
+    padding: 0 10px;
   }
   .container > form {
     width: 100%;
