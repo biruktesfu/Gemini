@@ -22,7 +22,7 @@ export default function Home() {
   );
   const [images, setImages] = useState<FileList>();
   const [loader, setLoader] = useState(<></>);
-  const [disabled, setDisabled] = useState(true);
+  const [disabled, setDisabled] = useState(false);
   const genAI = new GoogleGenerativeAI(process.env.API_KEY as string);
   const containerRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLDivElement>(null);
