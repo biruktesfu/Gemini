@@ -15,10 +15,10 @@ interface Iprops {
 }
 
 export const GeminiSelect: FC<Iprops> = (props) => {
-  const [option, setOption] = useState("Gemini Pro");
+  const [option, setOption] = useState("Gemini Pro Vision");
   return (
     <Select
-      onValueChange={(val) => {
+      onValueChange={(val: any) => {
         setOption(val);
         props.onChange(val);
       }}
@@ -27,9 +27,6 @@ export const GeminiSelect: FC<Iprops> = (props) => {
       <SelectTrigger className={styles.selectTrigger}>{option}</SelectTrigger>
       <SelectContent className={styles.selectContent}>
         <SelectGroup>
-          <SelectItem value="Gemini Pro" className={styles.selectItem}>
-            Gemini Pro
-          </SelectItem>
           <SelectItem value="Gemini Pro Vision" className={styles.selectItem}>
             Gemini Pro Vision
           </SelectItem>
