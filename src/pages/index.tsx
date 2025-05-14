@@ -149,24 +149,24 @@ export default function Home() {
   const onsubmit = async (prompt: string) => {
     setGenerated({ prompt, generated: "" });
     setLoader(<Loader />);
-    if (disabled) {
-      try {
-        const model = genAI.getGenerativeModel({ model: "gemini-pro" });
-        const result = await model.generateContent(prompt);
-        const response = await result.response;
-        const text = response.text();
+    // if (disabled) {
+    //   try {
+    //     const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+    //     const result = await model.generateContent(prompt);
+    //     const response = await result.response;
+    //     const text = response.text();
 
-        setGenerated({ prompt, generated: text });
-        setPrevious([...previous, { prompt, generated: text }]);
-        setLoader(<></>);
-      } catch (error: any) {
-        // setGenerated({ prompt, generated: error.toString() });
-        setGenerated({ prompt, generated: "An error occured" });
-        setLoader(<></>);
-      }
-    } else {
-      await geminiVision(prompt);
-    }
+    //     setGenerated({ prompt, generated: text });
+    //     setPrevious([...previous, { prompt, generated: text }]);
+    //     setLoader(<></>);
+    //   } catch (error: any) {
+    //     // setGenerated({ prompt, generated: error.toString() });
+    //     setGenerated({ prompt, generated: "An error occured" });
+    //     setLoader(<></>);
+    //   }
+    // } else {
+    await geminiVision(prompt);
+    // }
   };
   const onSelectChange = (option: string) => {
     if (option === "Gemini Pro") {
